@@ -19,25 +19,42 @@ using namespace std;
 int main(int argc, char* const argv[]) {
 
     // Create the index
+    //cout << sizeof(Record) << endl;
+
     LinearHashIndex emp_index("EmployeeIndex");
     emp_index.createFromFile("Employee.csv");
-    
+
+    string userInput;
+    bool quit = true;
+
     // Loop to lookup IDs until user is ready to quit
-    int id;
-    while (true) {
-        cout << "Enter an ID to lookup: ";
-        cin >> id;
-        if (id == -1) {
-            break;
+
+    while(quit)
+    {
+        cout << "\n\nLook employee up by ID (quit to exit):";
+        cin >> userInput;
+
+        while(cin.fail()) {
+            cout << "Invalid ID Error\n";
+            cin.clear();
+            cin.ignore(256,'\n');
+            cin >> userInput;
         }
-        Record record = emp_index.findRecordById(id);
-        if (record.id == -1) {
-            cout << "No record found for ID " << id << endl;
-        } else {
-            record.print();
+        if (userInput == "quit")
+        {
+            cout << "Have nice day\n";
+            return 0;
         }
+        else
+        {
+
+            cout << "Looking up ID: " << stoi(userInput) << endl;
+            Record target = emp_index.findRecordById(stoi(userInput));
+            target.print();
+        }
+
     }
-    
+
 
     return 0;
 }
